@@ -1,10 +1,8 @@
 import socket
 from bsonrpc import JSONRpc
-from bsonrpc.framing import (
-	JSONFramingNone)
+from bsonrpc.framing import (JSONFramingNone)
 from node import *
 
-children_index = 0
 leaf1 = node("leaf1")
 leaf2 = node("leaf2")
 
@@ -20,24 +18,21 @@ s.connect(('localhost', 50001))
 rpc = JSONRpc(s,framing_cls=JSONFramingNone)
 server = rpc.get_peer_proxy()
 
-# Start the dictionary
-root_dict = {root.name: []}
+root_dict = {root.name: []}                                                     # Start the dictionary
 
-# Populate the dictionary with the children information and with out duplicates
-for child in root.children:
+for child in root.children:                                                     # Populate the dictionary with the children information
     root_dict[root.name].append([child.name, child.children, child.val])
 
-# Call the increment method in the server
-result = server.increment(root_dict)
+root_dict[root.name].append(root.val)                                           # The last index in the list is the value of the root
 
-# Start modifying the graph with the information sent from the server
-root.val = result['root'][len(result['root']) - 1]
+result = server.increment(root_dict)                                            # Call the increment method in the server
 
-# Modify the children's values
-for index in range(len(result['root']) - 1):
+root.val = result['root'][len(result['root']) - 1]                              # Set the new value for the root
+
+for index in range(len(result['root']) - 1):                                    # Modify the children's values
     root.children[index].val = result['root'][index][2]
 
 print("Graph after increment")
-root.show()
+root.show()                                                                     # Show the graph after the increment
 
-rpc.close() # Closes the socket 's' also
+rpc.close()                                                                     # Closes the socket 's' also
