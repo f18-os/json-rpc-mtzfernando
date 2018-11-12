@@ -1,15 +1,23 @@
-This directory includes 
+# Jsonrpc Server and Client
 
-* `node.py`: which
-  * defines a node class. 
+## This directory includes
+
+* `client.py`:
+  * The client requests for a graph to be incremented. Before sending the graph to the server, it breaks it down into a dictionary then sends it to the server to be incremented.
+* `sever.py`:
+  * The server exports the increment method. Receives a dictionary, builds a graph from it, increments it, breaks it down to a dictionary and sends it to the client.
+* `request.json`:
+  * Contains the json request from the client to the server.
+* `node.py`:
+  * Which defines a node class.
     * contains a name, list of children, and a count that's initially zero
-    * implements a `show(graph)` method recursively prints the nodes within graph  
-  * An `increment(graph)` method that increments the counts of all nodes within graph. 
+    * implements a `show(graph)` method recursively prints the nodes within graph
+  * An `increment(graph)` method that increments the counts of all nodes within graph.
 * `localDemo.py`: which creates a dag of nodes, which it prints, increments, and prints again.
 
-Your tasks are
-* to create 
-  * a jsonrpc server that exports the `increment(graph)` function
-  * a client that demonstrates the effect of `increment()` being remotely executed on the graph from localDemo.py.
-  * a file named `request.json` containing a the manually genrated contents of jsonrpc request to `increment()`
-   equivalent to the one produced by your client.   You should use nc to confirm that it's correct.
+# How to use
+
+* `client.py`:
+  * $ python3 client.py
+* `server.py`:
+  * $ python3 server.py
